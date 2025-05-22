@@ -1,8 +1,7 @@
 # Template per il progetto di programmazione web
 Scarica il progetto con il seguente comando:
 ```bash
-git clone git@github.com:danielepintore/unica_progetto_programmazione_web.git
-progetto_web
+git clone git@github.com:danielepintore/unica_progetto_programmazione_web.git progetto_web
 cd progetto_web
 ```
 Una volta scaricato entra nella cartella del progetto dove troverai delle
