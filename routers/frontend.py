@@ -1,6 +1,9 @@
-from fastapi import APIRouter, Path
+from fastapi import APIRouter, Path, Request
 from fastapi.exceptions import HTTPException
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 from sqlmodel import select
+from pathlib import Path as PPath
 from typing import Annotated
 from models.book import Book, BookCreate
 from data.db import DBSession
@@ -42,3 +45,35 @@ def example_handler_with_db_post(
     db_session.add(Book.model_validate(book))
     db_session.commit()
     return "Book added!!"
+
+
+templates = Jinja2Templates(directory=(PPath(__file__).parent.parent / "templates"))
+
+
+@router.get("/", response_class=HTMLResponse)
+async def home(request: Request):
+    return templates.TemplateResponse(
+        request=request, name="home.html",
+    )
+
+
+@router.get("/events_list", response_class=HTMLResponse)
+async def events_list(request: Request):
+    return templates.TemplateResponse(
+        request=request, name="events.html",
+    )
+
+
+@router.get("/event_detail/{id}", response_class=HTMLResponse)
+async def event_detail(request: Request, id: int):
+    return templates.TemplateResponse(
+        request=request, name="event_detail.html",
+        context={"event_id": id},
+    )
+
+
+@router.get("/users_list", response_class=HTMLResponse)
+async def users_list(request: Request):
+    return templates.TemplateResponse(
+        request=request, name="users.html"
+    )

@@ -6,6 +6,7 @@ from routers import frontend
 from data.db import init_database
 
 API_PREFIX = "/v1"
+APP_STATIC_DIR = Path(__file__).parent / "static"
 
 
 @asynccontextmanager
@@ -16,6 +17,6 @@ async def lifespan(app: FastAPI):
     # on close
 
 app = FastAPI(lifespan=lifespan)
-app.include_router(frontend.router, prefix=API_PREFIX)
-app.mount("/", StaticFiles(directory=Path(__file__).parent /
-          "application/dist", html=True), name="static")
+app.include_router(frontend.router)
+# app.include_router(frontend.router, prefix=API_PREFIX)
+app.mount("/", StaticFiles(directory=APP_STATIC_DIR, html=True), name="static")
