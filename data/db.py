@@ -25,7 +25,6 @@ def init_database() -> None:
             for i in range(10):
                 event = Event(title=f.sentence(nb_words=5),
                               description=f.name(), date=f.date_time(), location=f.address())
-                print(event)
                 session.add(event)
             session.commit()
 
