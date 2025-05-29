@@ -4,23 +4,26 @@ from models.users import User
 from sqlmodel import select, delete
 
 
-router = APIRouter ()
+router = APIRouter()
+
 
 @router.get("/users")
 def get_all_users(db_session: DBSession):
-    users= db_session.exec(select(User)).all()
+    users = db_session.exec(select(User)).all()
     return users
+
 
 @router.post("/users")
 def create_user(db_session: DBSession, user: User):
-    user.id=None
+    user.id = None
     db_session.add(User.model_validate(user))
     db_session.commit()
     return "User created!"
 
+
 @router.delete("/users")
 def delete_all_users(db_session: DBSession):
-   statement = delete(User)
-   db_session.exec(statement)
-   db_session.commit()
-   return "All users deleted successfully!"
+    statement = delete(User)
+    db_session.exec(statement)
+    db_session.commit()
+    return "All users deleted successfully!"

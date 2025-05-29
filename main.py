@@ -22,5 +22,3 @@ app.include_router(events.router)
 app.include_router(users.router)
 # app.include_router(frontend.router, prefix=API_PREFIX)
 app.mount("/", StaticFiles(directory=APP_STATIC_DIR, html=True), name="static")
-
-

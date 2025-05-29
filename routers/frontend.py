@@ -44,7 +44,8 @@ def example_handler_with_db_post(
     return "Book added!!"
 """
 
-templates = Jinja2Templates(directory=(PPath(__file__).parent.parent / "templates"))
+templates = Jinja2Templates(directory=(
+    PPath(__file__).parent.parent / "templates"))
 
 
 @router.get("/", response_class=HTMLResponse)

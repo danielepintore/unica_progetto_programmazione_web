@@ -6,7 +6,7 @@ from typing import Annotated
 import os
 # Remember to import all classes of database objects
 from models.events import Event
-from models.users import User 
+from models.users import User
 
 DB_PATH = Path(__file__).parent / "store.db"
 DB_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -28,7 +28,8 @@ def init_database() -> None:
                               description=f.name(), date=f.date_time(), location=f.address())
                 session.add(event)
 
-                user= User(username=f.user_name(),name=f.name(),email=f.email())
+                user = User(username=f.user_name(),
+                            name=f.name(), email=f.email())
                 session.add(user)
             session.commit()
 
