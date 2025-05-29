@@ -58,3 +58,14 @@ def update_event(
     db_session.commit()
     return "Event updated successfully!"
 
+@router.delete("/events/{id}")
+def delete_event(
+    db_session: DBSession,
+    id: Annotated[int, Path(description="The id of the event to delete")]
+):
+    event = db_session.get(Event, id)
+    if event is None:
+        raise HTTPException(status_code=404, detail="Event not found")
+    db_session.delete(event)
+    db_session.commit()
+    return "Event deleted successfully!"
