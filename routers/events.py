@@ -2,7 +2,7 @@ from data.db import DBSession
 from fastapi import APIRouter, Path, Body, HTTPException
 from models.events import Event, EventCreate
 from models.registrations import Registrations
-from models.users import UserBase
+from models.users import User
 from sqlmodel import select, delete
 from typing import Annotated
 
@@ -99,7 +99,7 @@ def delete_event(
 def add_registration(
     db_session: DBSession,
     id: Annotated[int, Path(description="The id of the event to delete")],
-    user: Annotated[UserBase, Body(description="The user to register")]
+    user: Annotated[User, Body(description="The user to register")]
 ) -> str:
     try:
         registration = Registrations(
