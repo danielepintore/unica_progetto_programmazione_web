@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Annotated
 import os
 # Remember to import all classes of database objects
-from models.book import Book  # NOQA
+from models.events import Event  # NOQA
 
 DB_PATH = Path(__file__).parent / "store.db"
 DB_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -22,10 +22,11 @@ def init_database() -> None:
         f = Faker("it_IT")
         with Session(engine) as session:
             # generate 100 books
-            for i in range(100):
-                book = Book(title=f.sentence(nb_words=5),
-                            author=f.name(), rieview=f.pyint(1, 5))
-                session.add(book)
+            for i in range(10):
+                event = Event(title=f.sentence(nb_words=5),
+                              description=f.name(), date=f.date_time(), location=f.address())
+                print(event)
+                session.add(event)
             session.commit()
 
 
