@@ -25,11 +25,12 @@ def init_database() -> None:
             # generate 100 books
             for i in range(10):
                 event = Event(title=f.sentence(nb_words=5),
-                              description=f.name(), date=f.date_time(), location=f.address())
-                session.add(event)
-
+                              description=f.name(), date=f.date_time(),
+                              location=f.address())
                 user = User(username=f.user_name(),
                             name=f.name(), email=f.email())
+
+                session.add(event)
                 session.add(user)
             session.commit()
 

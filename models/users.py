@@ -7,5 +7,6 @@ class UserBase(SQLModel):
     email: str
 
 
-class User(UserBase, table=True):  # Modello relazionale (dati non validati -> table=True)
+# Modello relazionale (dati non validati -> table=True)
+class User(UserBase, table=True):
     id: int | None = Field(default=None, primary_key=True)

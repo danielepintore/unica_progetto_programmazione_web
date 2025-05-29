@@ -1,58 +1,73 @@
-from fastapi import APIRouter
 from data.db import DBSession
-from models.users import User
-from sqlmodel import select, delete
+from fastapi import APIRouter
 from fastapi.exceptions import HTTPException
-from typing import Annotated
+from models.users import User
 from pathlib import Path
+from sqlmodel import select, delete
+from typing import Annotated
 
 
 router = APIRouter()
 
 
 @router.get("/users")
-def get_all_users(db_session: DBSession):
-    users = db_session.exec(select(User)).all()
-    return users
+def get_all_users(db_session: DBSession) -> [User]:
+    try:
+        users = db_session.exec(select(User)).all()
+        return users
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=e.__str__())
 
 
 @router.get("/users/{username}")
 def get_user_by_id(
     db_session: DBSession,
     username: Annotated[str, Path(description="The username of the user")],
-):
-    user = db_session.exec(select(User).where(
-        User.username == username)).first()
-    if user is None:
-        raise HTTPException(status_code=404, detail="User not found!")
-    return user
+) -> User:
+    try:
+        user = db_session.exec(select(User).where(
+            User.username == username)).first()
+        if user is None:
+            raise HTTPException(status_code=404, detail="User not found!")
+        return user
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=e.__str__())
 
 
 @router.delete("/users/{username}")
 def delete_user_by_id(
     db_session: DBSession,
     username: Annotated[str, Path(description="The username of the user")],
-):
-    statement = delete(User).where(User.username == username)
-    result = db_session.exec(statement)
-    db_session.commit()
+) -> str:
+    try:
+        statement = delete(User).where(User.username == username)
+        result = db_session.exec(statement)
+        db_session.commit()
 
-    if result.rowcount == 0:
-        raise HTTPException(status_code=404, detail="User not found!")
-    return "User deleted successfully!"
+        if result.rowcount == 0:
+            raise HTTPException(status_code=404, detail="User not found!")
+        return "User deleted successfully!"
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=e.__str__())
 
 
 @router.post("/users")
-def create_user(db_session: DBSession, user: User):
-    user.id = None
-    db_session.add(User.model_validate(user))
-    db_session.commit()
-    return "User created!"
+def create_user(db_session: DBSession, user: User) -> str:
+    try:
+        user.id = None
+        db_session.add(User.model_validate(user))
+        db_session.commit()
+        return "User created!"
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=e.__str__())
 
 
 @router.delete("/users")
-def delete_all_users(db_session: DBSession):
-    statement = delete(User)
-    db_session.exec(statement)
-    db_session.commit()
-    return "All users deleted successfully!"
+def delete_all_users(db_session: DBSession) -> str:
+    try:
+        statement = delete(User)
+        db_session.exec(statement)
+        db_session.commit()
+        return "All users deleted successfully!"
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=e.__str__())
