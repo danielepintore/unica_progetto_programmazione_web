@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from data.db import DBSession
 from models.users import User
 from sqlmodel import select, delete
+from fastapi.exceptions import HTTPException
 from typing import Annotated
 from pathlib import Path
 
@@ -22,6 +23,8 @@ def get_user_by_id(
 ):
     user = db_session.exec(select(User).where(
         User.username == username)).first()
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found!")
     return user
 
 
