@@ -11,7 +11,7 @@ router = APIRouter()
 
 
 @router.get("/users")
-def get_all_users(db_session: DBSession) -> [User]:
+def get_all_users(db_session: DBSession) -> list[User]:
     try:
         users = db_session.exec(select(User)).all()
         return users

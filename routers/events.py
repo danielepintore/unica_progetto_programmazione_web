@@ -10,7 +10,7 @@ router = APIRouter()
 
 
 @router.get("/events")
-def get_all_events(db_session: DBSession) -> [Event]:
+def get_all_events(db_session: DBSession) -> list[Event]:
     try:
         events = db_session.exec(select(Event)).all()
         return events
