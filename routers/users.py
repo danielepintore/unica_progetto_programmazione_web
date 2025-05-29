@@ -56,7 +56,6 @@ def create_user(
     user: Annotated[User, Body(description="The new user")]
 ) -> str:
     try:
-        user.id = None
         db_session.add(User.model_validate(user))
         db_session.commit()
         return "User created!"
