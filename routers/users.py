@@ -28,6 +28,20 @@ def get_user_by_id(
     return user
 
 
+@router.delete("/users/{username}")
+def delete_user_by_id(
+    db_session: DBSession,
+    username: Annotated[str, Path(description="The username of the user")],
+):
+    statement = delete(User).where(User.username == username)
+    result = db_session.exec(statement)
+    db_session.commit()
+
+    if result.rowcount == 0:
+        raise HTTPException(status_code=404, detail="User not found!")
+    return "User deleted successfully!"
+
+
 @router.post("/users")
 def create_user(db_session: DBSession, user: User):
     user.id = None
