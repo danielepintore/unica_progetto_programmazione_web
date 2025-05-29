@@ -2,6 +2,8 @@ from fastapi import APIRouter
 from data.db import DBSession
 from models.users import User
 from sqlmodel import select, delete
+from typing import Annotated
+from pathlib import Path
 
 
 router = APIRouter()
@@ -10,6 +12,15 @@ router = APIRouter()
 @router.get("/users")
 def get_all_users(db_session: DBSession):
     users = db_session.exec(select(User)).all()
+    return users
+
+
+@router.get("/users/{id}")
+def get_user_by_id(
+    db_session: DBSession,
+    id: Annotated[int, Path(description="The id of the user")],
+):
+    users = db_session.get(User, id)
     return users
 
 
