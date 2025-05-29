@@ -1,7 +1,10 @@
 from fastapi import APIRouter
+from fastapi.exceptions import HTTPException
 from data.db import DBSession
 from sqlmodel import select
 from models.events import Event
+from pathlib import Path
+from typing import Annotated
 
 router = APIRouter()
 
@@ -17,3 +20,14 @@ def create_event(db_session: DBSession, event: Event):
     db_session.add(Event.model_validate(event))
     db_session.commit()
     return "Event created successfully!"
+
+@router.get("/events/{id}")
+def get_event_with_id(
+    db_session: DBSession,
+    id: Annotated[int, Path(description="The id of the event")]
+) -> Event:
+    event = db_session.get(Event,id)
+    if event:
+        return event
+    else:
+        raise HTTPException(status_code=404, detail="Event not found")
