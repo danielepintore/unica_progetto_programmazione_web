@@ -59,7 +59,7 @@
   // Fetch users from the API and render them on the page
   async function fetchUsers() {
     try {
-      const response = await fetch('/users');
+      const response = await fetch('/v1/users');
       if (response.ok) {
         const users = await response.json();
         renderUsers(users);
@@ -108,7 +108,7 @@
           // Reference to the modal's body element
           const modalBody = document.querySelector('#resultModal .modal-body');
           try {
-            const res = await fetch(`/users/${username}`, { method: 'DELETE' });
+            const res = await fetch(`/v1/users/${username}`, { method: 'DELETE' });
             if (res.ok) {
               // Optionally parse response data if needed: const data = await res.json();
               modalBody.textContent = await res.text();
@@ -140,7 +140,7 @@
     const modalBody = document.querySelector('#resultModal .modal-body');
 
     try {
-      const res = await fetch('/users', {
+      const res = await fetch('/v1/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newUser)
@@ -169,7 +169,7 @@
       // Reference to the modal's body element
       const modalBody = document.querySelector('#resultModal .modal-body');
       try {
-        const res = await fetch('/users', { method: 'DELETE' });
+        const res = await fetch('/v1/users', { method: 'DELETE' });
         if (res.ok) {
           // Optionally parse response data if needed: const data = await res.json();
           modalBody.textContent = await res.text();

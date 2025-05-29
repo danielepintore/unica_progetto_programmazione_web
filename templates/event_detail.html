@@ -88,7 +88,7 @@
   // Fetch event details to display the main event info and pre-fill the update form
   async function fetchEventDetails() {
     try {
-      const response = await fetch(`/events/${eventId}`);
+      const response = await fetch(`/v1/events/${eventId}`);
       if (response.ok) {
         const event = await response.json();
         document.getElementById('event-details').innerHTML = `
@@ -115,7 +115,7 @@
   // Fetch registrations from the API and filter registrations by the current event ID
   async function fetchRegistrations() {
     try {
-      const response = await fetch('/registrations');
+      const response = await fetch('/v1/registrations');
       if (response.ok) {
         const registrations = await response.json();
         // Filter for registrations that belong to this event (matching event_id)
@@ -161,7 +161,7 @@
       deleteButton.style.marginLeft = '10px';
 
       deleteButton.addEventListener('click', () => {
-        const url = `/registrations?username=${encodeURIComponent(reg.username)}&event_id=${encodeURIComponent(reg.event_id)}`;
+        const url = `/v1/registrations?username=${encodeURIComponent(reg.username)}&event_id=${encodeURIComponent(reg.event_id)}`;
         // Reference to the modal's body element
         const modalBody = document.querySelector('#resultModal .modal-body');
         fetch(url, { method: 'DELETE' })
@@ -206,7 +206,7 @@
     const modalBody = document.querySelector('#resultModal .modal-body');
 
     try {
-      const response = await fetch(`/events/${eventId}`, {
+      const response = await fetch(`/v1/events/${eventId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedEvent)
@@ -241,7 +241,7 @@
     const modalBody = document.querySelector('#resultModal .modal-body');
 
     try {
-      const response = await fetch(`/events/${eventId}/register`, {
+      const response = await fetch(`/v1/events/${eventId}/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(registrationData)

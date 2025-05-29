@@ -64,7 +64,7 @@
 // Function to fetch and render events
 async function fetchEvents() {
   try {
-    const response = await fetch('/events');
+    const response = await fetch('/v1/events');
     if (response.ok) {
       const events = await response.json();
       renderEvents(events);
@@ -110,7 +110,7 @@ function renderEvents(events) {
         // Reference to the modal's body element
         const modalBody = document.querySelector('#resultModal .modal-body');
         try {
-          const res = await fetch(`/events/${eventId}`, { method: 'DELETE' });
+          const res = await fetch(`/v1/events/${eventId}`, { method: 'DELETE' });
           if (res.ok) {
             // Optionally parse response data if needed: const data = await res.json();
             modalBody.textContent = await res.text();
@@ -146,7 +146,7 @@ document.getElementById('add-event-form').addEventListener('submit', async funct
   const modalBody = document.querySelector('#resultModal .modal-body');
 
   try {
-    const res = await fetch('/events', {
+    const res = await fetch('/v1/events', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newEvent)
@@ -178,7 +178,7 @@ document.getElementById('delete-all').addEventListener('click', async function()
 
   if (confirm('Are you sure you want to delete all events?')) {
     try {
-      const res = await fetch('/events', { method: 'DELETE' });
+      const res = await fetch('/v1/events', { method: 'DELETE' });
       if (res.ok) {
         // Optionally parse response data if needed: const data = await res.json();
         modalBody.textContent = await res.text();
