@@ -1,11 +1,12 @@
 from sqlmodel import SQLModel, Field
+from datetime import datetime
 # from typing import Annotated
 
 
 class EventBase(SQLModel):  # Superclasse con attibuti comuni
     title: str
     description: str
-    date: str
+    date: datetime
     location: str
 
 
