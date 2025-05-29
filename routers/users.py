@@ -1,8 +1,7 @@
 from data.db import DBSession
-from fastapi import APIRouter
+from fastapi import APIRouter, Path, Body
 from fastapi.exceptions import HTTPException
 from models.users import User
-from pathlib import Path
 from sqlmodel import select, delete
 from typing import Annotated
 
@@ -52,7 +51,10 @@ def delete_user_by_id(
 
 
 @router.post("/users")
-def create_user(db_session: DBSession, user: User) -> str:
+def create_user(
+    db_session: DBSession,
+    user: Annotated[User, Body(description="The new user")]
+) -> str:
     try:
         user.id = None
         db_session.add(User.model_validate(user))

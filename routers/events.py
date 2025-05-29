@@ -1,5 +1,5 @@
 from data.db import DBSession
-from fastapi import APIRouter, Path, HTTPException
+from fastapi import APIRouter, Path, Body, HTTPException
 from models.events import Event, EventCreate
 from models.registrations import Registrations
 from models.users import UserBase
@@ -19,7 +19,10 @@ def get_all_events(db_session: DBSession) -> list[Event]:
 
 
 @router.post("/events")
-def create_event(db_session: DBSession, event: Event) -> str:
+def create_event(
+    db_session: DBSession,
+    event: Annotated[Event, Body(description="The new event")]
+) -> str:
     try:
         event.id = None
         db_session.add(Event.model_validate(event))
@@ -96,7 +99,7 @@ def delete_event(
 def add_registration(
     db_session: DBSession,
     id: Annotated[int, Path(description="The id of the event to delete")],
-    user: Annotated[UserBase, Path(description="The user to register")]
+    user: Annotated[UserBase, Body(description="The user to register")]
 ) -> str:
     try:
         registration = Registrations(
