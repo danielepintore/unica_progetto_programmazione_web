@@ -7,6 +7,13 @@ router = APIRouter()
 
 
 @router.get("/events")
-def example_handler(db_session: DBSession):
+def get_all_events(db_session: DBSession):
     events = db_session.exec(select(Event)).all()
     return events
+
+@router.post("/events")
+def create_event(db_session: DBSession, event: Event):
+    event.id=None
+    db_session.add(Event.model_validate(event))
+    db_session.commit()
+    return "Event created successfully!"
