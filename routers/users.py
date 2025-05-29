@@ -15,13 +15,14 @@ def get_all_users(db_session: DBSession):
     return users
 
 
-@router.get("/users/{id}")
+@router.get("/users/{username}")
 def get_user_by_id(
     db_session: DBSession,
-    id: Annotated[int, Path(description="The id of the user")],
+    username: Annotated[str, Path(description="The username of the user")],
 ):
-    users = db_session.get(User, id)
-    return users
+    user = db_session.exec(select(User).where(
+        User.username == username)).first()
+    return user
 
 
 @router.post("/users")
