@@ -30,7 +30,7 @@ def delete_event(
         registration = db_session.exec(query).first()
         if registration is None:
             raise HTTPException(
-                status_code=404, detail="Registation not found")
+                status_code=404, detail="Registration not found")
         db_session.delete(registration)
         db_session.commit()
         return "Registration deleted successfully!"
