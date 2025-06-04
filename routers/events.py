@@ -24,7 +24,7 @@ def create_event(
     event: Annotated[Event, Body(description="The new event")]
 ) -> str:
     try:
-        event.id = None
+        event.id = None  # let the database generate an id
         db_session.add(Event.model_validate(event))
         db_session.commit()
         return "Event created successfully!"
@@ -35,8 +35,7 @@ def create_event(
 @router.delete("/events")
 def delete_all_events(db_session: DBSession) -> str:
     try:
-        statement = delete(Event)
-        db_session.exec(statement)
+        db_session.exec(delete(Event))
         db_session.commit()
         return "All events deleted successfully!"
     except Exception as e:

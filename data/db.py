@@ -22,7 +22,7 @@ def init_database() -> None:
         # We don't have a database, generate fake data
         f = Faker("it_IT")
         with Session(engine) as session:
-            # generate 100 books
+            # generate 10 events and users and add them to the db
             for i in range(10):
                 event = Event(title=f.sentence(nb_words=5),
                               description=f.name(), date=f.date_time(),
