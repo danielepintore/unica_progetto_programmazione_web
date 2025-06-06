@@ -1,10 +1,11 @@
 from sqlmodel import SQLModel, Field
 from pydantic import Field as PyField
+from pydantic import EmailStr
 
 
 class UserBase(SQLModel):
     name: str = PyField(min_length=3)
-    email: str = PyField(min_length=3)
+    email: EmailStr = PyField(min_length=3)
 
 
 # Modello relazionale (dati non validati -> table=True)
