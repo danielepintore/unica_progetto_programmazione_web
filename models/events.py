@@ -1,11 +1,12 @@
 from sqlmodel import SQLModel, Field
 from datetime import datetime
+from pydantic import Field as PyField
 
 
 class EventBase(SQLModel):  # Superclasse con attibuti comuni
     title: str
     description: str
-    date: datetime
+    date: datetime = PyField(strict=True)
     location: str
 
 

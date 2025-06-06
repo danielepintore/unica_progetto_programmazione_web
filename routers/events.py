@@ -1,5 +1,6 @@
 from data.db import DBSession
 from fastapi import APIRouter, Path, Body, HTTPException
+from pydantic import ValidationError
 from models.events import Event, EventCreate
 from models.registrations import Registrations
 from models.users import User
@@ -28,6 +29,8 @@ def create_event(
         db_session.add(Event.model_validate(event))
         db_session.commit()
         return "Event created successfully!"
+    except ValidationError as e:
+        raise HTTPException(status_code=400, detail=e.__str__())
     except Exception as e:
         raise HTTPException(status_code=500, detail=e.__str__())
 
