@@ -74,7 +74,11 @@ def update_event(
         event.description = new_event.description
         event.date = new_event.date
         event.location = new_event.location
-        db_session.add(Event.model_validate(event))
+        event_id = event.id
+        event.id = None
+        Event.model_validate(event)
+        event.id = event_id
+        db_session.add(event)
         db_session.commit()
         return "Event updated successfully!"
     except ValidationError as e:
