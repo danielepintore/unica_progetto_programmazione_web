@@ -1,6 +1,6 @@
 from data.db import DBSession
 from fastapi import APIRouter, HTTPException, Query
-from models.registrations import Registrations
+from models.registrations import RegistrationPublic, Registrations
 from sqlmodel import select
 from typing import Annotated
 
@@ -8,10 +8,10 @@ router = APIRouter()
 
 
 @router.get("/registrations")
-def get_all_registrations(db_session: DBSession) -> list[Registrations]:
+def get_all_registrations(db_session: DBSession) -> list[RegistrationPublic]:
     try:
         registrations = db_session.exec(select(Registrations)).all()
-        return registrations
+        return [RegistrationPublic.from_orm(r) for r in registrations]
     except Exception as e:
         raise HTTPException(status_code=500, detail=e.__str__())
 
