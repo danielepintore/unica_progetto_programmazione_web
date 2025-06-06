@@ -109,5 +109,7 @@ def add_registration(
         db_session.add(Registrations.model_validate(registration))
         db_session.commit()
         return "Registration successfull!"
+    except ValidationError as e:
+        raise HTTPException(status_code=400, detail=e.__str__())
     except Exception as e:
         raise HTTPException(status_code=500, detail=e.__str__())
