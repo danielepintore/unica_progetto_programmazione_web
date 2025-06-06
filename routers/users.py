@@ -1,6 +1,7 @@
 from data.db import DBSession
 from fastapi import APIRouter, Path, Body
 from fastapi.exceptions import HTTPException
+from pydantic import ValidationError
 from models.users import User
 from sqlmodel import select, delete
 from typing import Annotated
@@ -59,6 +60,8 @@ def create_user(
         db_session.add(User.model_validate(user))
         db_session.commit()
         return "User created!"
+    except ValidationError as e:
+        raise HTTPException(status_code=400, detail=e.__str__())
     except Exception as e:
         raise HTTPException(status_code=500, detail=e.__str__())
 
