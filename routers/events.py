@@ -5,6 +5,7 @@ from models.events import Event, EventCreate
 from models.registrations import Registrations
 from models.users import User
 from sqlmodel import select, delete
+from sqlalchemy.exc import IntegrityError
 from typing import Annotated
 
 router = APIRouter()
@@ -116,7 +117,7 @@ def add_registration(
         db_session.add(Registrations.model_validate(registration))
         db_session.commit()
         return "Registration successfull!"
-    except ValidationError as e:
+    except (ValidationError, IntegrityError) as e:
         raise HTTPException(status_code=400, detail=e.__str__())
     except Exception as e:
         raise HTTPException(status_code=500, detail=e.__str__())
