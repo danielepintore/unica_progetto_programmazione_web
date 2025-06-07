@@ -11,7 +11,8 @@ router = APIRouter()
 def get_all_registrations(db_session: DBSession) -> list[RegistrationPublic]:
     try:
         registrations = db_session.exec(select(Registrations)).all()
-        return [RegistrationPublic.from_orm(r) for r in registrations]
+        return [RegistrationPublic(username=r.username, event_id=r.event_id)
+                for r in registrations]
     except Exception as e:
         raise HTTPException(status_code=500, detail=e.__str__())
 
