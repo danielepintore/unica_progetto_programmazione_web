@@ -110,6 +110,7 @@ def add_registration(
     user: Annotated[User, Body(description="The user to register")]
 ) -> str:
     try:
+        User.model_validate(user)
         registration = Registrations(
             username=user.username, name=user.name, event_id=id)
         db_session.add(Registrations.model_validate(registration))
